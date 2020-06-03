@@ -20,7 +20,9 @@ const signupUser = ({ email, password, masterp }) => {
 
 const fetchUser = (token) => {
   return axios.get(`${VUE_APP_API_URL}/users/me`, {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
 }
 

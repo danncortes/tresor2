@@ -31,14 +31,50 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources'],
   /*
    ** Nuxt.js modules
    */
+
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    'cookie-universal-nuxt'
   ],
+  axios: {
+    baseURL:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:4040'
+        : 'https://secretvault-api.herokuapp.com'
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/auth/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: {
+            url: '/api/auth/logout',
+            method: 'post'
+          },
+          user: {
+            url: '/api/auth/user',
+            method: 'get',
+            propertyName: 'user'
+          }
+        },
+        tokenType: 'Bearer'
+      }
+    }
+  },
+  router: {
+    middleware: 'auth'
+  },
   /*
    ** Build configuration
    */

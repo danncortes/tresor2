@@ -1,14 +1,11 @@
 <template>
   <b-tabs card justified>
     <b-tab title="Login" active>
-      <!-- <LoginForm
-          :error="userState.login.error"
-          :loading="userState.login.loading"
-          @onSubmitLogin="onSubmitLogin"
-        ></LoginForm> -->
-
-      {{ this.$store.state.users }}
-      <div @click="doSomething">Here</div>
+      <LoginForm
+        :error="loginError"
+        :loading="loginLoading"
+        @onSubmitLogin="onSubmitLogin"
+      ></LoginForm>
     </b-tab>
     <b-tab title="Sign Up">
       <!-- <SignUpForm
@@ -23,20 +20,37 @@
 <script lang="ts">
 import Vue from 'vue'
 import { BTabs, BTab } from 'bootstrap-vue'
+import LoginForm from '@/components/LoginForm.vue'
 
 export default Vue.extend({
   components: {
     BTabs,
-    BTab
-    // LoginForm,
+    BTab,
+    LoginForm
     // SignUpForm
   },
-  updated() {
-    // console.log(this.$store.commit)
+  data() {
+    return {
+      loginLoading: false,
+      loginError: null,
+      signupLoading: false,
+      signupError: null
+    }
   },
+  created() {},
   methods: {
-    doSomething() {
-      this.$store.dispatch('users/add')
+    async onSubmitLogin(form: object) {
+      try {
+        this.loginError = null
+        this.loginLoading = true
+        await this.$auth.loginWith('local', { data: { ...form } })
+        await this.$cookies.set('masterp', form.masterp)
+        this.$router.push('/')
+      } catch (err) {
+        this.loginError = 'There was an error Logging In'
+      } finally {
+        this.loginLoading = false
+      }
     }
   }
 })

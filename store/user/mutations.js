@@ -18,6 +18,12 @@ export default {
     state.login = defaultLoginState
     state.signUp = defaultSignUpState
   },
+  setLoadingLogin(state, payload) {
+    state.login = {
+      ...state.login,
+      loading: payload
+    }
+  },
   setErrorLogin(state, payload) {
     state.login = {
       ...state.login,
@@ -35,15 +41,5 @@ export default {
       ...state.signUp,
       error: payload
     }
-  },
-  add(state, text) {
-    console.log('add -> state', state)
-    state.user = { ...state.user, name: 'daniel' }
-  },
-  remove(state, { todo }) {
-    state.list.splice(state.list.indexOf(todo), 1)
-  },
-  toggle(state, todo) {
-    todo.done = !todo.done
   }
 }
