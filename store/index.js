@@ -1,3 +1,1 @@
-export const state = () => ({
-  counter: 2
-})
+export const state = () => ({})

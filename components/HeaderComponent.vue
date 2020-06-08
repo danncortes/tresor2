@@ -20,7 +20,7 @@
       @click="onClickLogout"
     >
       <span class="mr-2">Log Out</span>
-      <i class="fas fa-sign-out-alt"></i>
+      <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
     </b-button>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default Vue.extend({
   methods: {
     async onClickLogout() {
       try {
+        // @ts-ignore
         await this.$auth.logout('local')
         this.$router.push('/login')
       } finally {

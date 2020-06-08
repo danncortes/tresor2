@@ -23,11 +23,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['@fortawesome/fontawesome-svg-core/styles.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~plugins/filters.js', '~/plugins/fontawesome.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -41,29 +41,30 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    '@nuxtjs/dayjs'
   ],
   axios: {
     baseURL:
       process.env.NODE_ENV === 'development'
-        ? 'http://localhost:4040'
-        : 'https://secretvault-api.herokuapp.com'
+        ? 'http://localhost:4040/api'
+        : 'https://secretvault-api.herokuapp.com/api'
   },
   auth: {
     strategies: {
       local: {
         endpoints: {
           login: {
-            url: '/api/auth/login',
+            url: '/auth/login',
             method: 'post',
             propertyName: 'token'
           },
           logout: {
-            url: '/api/auth/logout',
+            url: '/auth/logout',
             method: 'post'
           },
           user: {
-            url: '/api/auth/user',
+            url: '/auth/user',
             method: 'get',
             propertyName: 'user'
           }

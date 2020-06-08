@@ -43,10 +43,13 @@ export default Vue.extend({
       try {
         this.loginError = null
         this.loginLoading = true
+        // @ts-ignore
         await this.$auth.loginWith('local', { data: { ...form } })
+        // @ts-ignore
         await this.$cookies.set('masterp', form.masterp)
         this.$router.push('/')
       } catch (err) {
+        // @ts-ignore
         this.loginError = 'There was an error Logging In'
       } finally {
         this.loginLoading = false

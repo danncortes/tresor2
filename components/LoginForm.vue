@@ -39,7 +39,7 @@
       {{ error }}
     </b-alert>
     <b-button block type="submit" variant="primary" :disabled="loading">
-      <i v-if="loading" class="fas fa-spinner fa-spin"></i>
+      <font-awesome-icon v-if="loading" :icon="['fas', 'spinner']" spin />
       <span v-else>Log In</span>
     </b-button>
     <b-button block type="reset" variant="default" size="sm">Clear</b-button>
@@ -57,10 +57,11 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { BButton, BForm, BFormInput, BFormGroup, BAlert } from 'bootstrap-vue'
 import MasterP from '@/mixins/MasterP'
 
-export default {
+export default Vue.extend({
   components: {
     BButton,
     BForm,
@@ -107,5 +108,5 @@ export default {
       this.$emit('onSubmitLogin', this.form)
     }
   }
-}
+})
 </script>
