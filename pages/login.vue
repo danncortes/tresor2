@@ -31,10 +31,10 @@ export default Vue.extend({
   },
   data() {
     return {
-      loginLoading: false,
-      loginError: null,
-      signupLoading: false,
-      signupError: null
+      loginLoading: false as boolean,
+      loginError: null as String | null,
+      signupLoading: false as boolean,
+      signupError: null as String | null
     }
   },
   created() {},
@@ -49,7 +49,6 @@ export default Vue.extend({
         await this.$cookies.set('masterp', form.masterp)
         this.$router.push('/')
       } catch (err) {
-        // @ts-ignore
         this.loginError = 'There was an error Logging In'
       } finally {
         this.loginLoading = false

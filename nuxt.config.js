@@ -16,6 +16,18 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
+  pwa: {
+    manifest: {
+      name: 'Tresor App',
+      lang: 'en-US'
+    },
+    icon: {
+      iconSrc: './static/icon.png'
+    },
+    meta: {
+      /* meta options */
+    }
+  },
   /*
    ** Customize the progress-bar color
    */
@@ -31,7 +43,11 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/pwa'
+  ],
   /*
    ** Nuxt.js modules
    */
