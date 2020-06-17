@@ -1,43 +1,43 @@
 <template>
-  <div class="credential-field mb-3">
-    <b-container class="bv-example-row">
-      <b-row align-h="between" align-v="start" no-gutters>
-        <b-col cols="auto">
-          <div class="credential-field__inputs d-flex">
-            <div v-if="edit" role="group" class="mr-2">
-              <!-- Field Name -->
-              <b-input
-                size="sm"
-                :value="fieldName"
-                type="text"
-                :readonly="readonly"
-                placeholder="Field Name"
-                :state="fieldNameValid"
-                required
-                class="credential-field__input-field-name"
-                @keyup="
-                  (e) => {
-                    onChangeFieldName(e)
-                  }
-                "
-              ></b-input>
-              <b-form-invalid-feedback
-                id="input-live-feedback"
-                class="credential-field__input-field-name-feedback"
-              >
-                "{{ fieldName }}" field should not be duplicated
-              </b-form-invalid-feedback>
-            </div>
-
-            <!-- Label Read-->
-            <label
-              v-else
-              class="mr-sm-2 credential-field__field-name-read"
-              :for="`inline-form-input-${index}`"
+  <div :class="['credential-field', { 'credential-field--edit': edit }]">
+    <b-row align-h="start" align-v="end" no-gutters>
+      <b-col cols="auto">
+        <div :class="['credential-field__inputs', { 'd-sm-flex': edit }]">
+          <div v-if="edit" role="group" class="mr-2">
+            <!-- Field Name -->
+            <b-input
+              size="sm"
+              :value="fieldName"
+              type="text"
+              :readonly="readonly"
+              placeholder="Field Name"
+              :state="fieldNameValid"
+              required
+              class="credential-field__input-field-name"
+              @keyup="
+                (e) => {
+                  onChangeFieldName(e)
+                }
+              "
+            ></b-input>
+            <b-form-invalid-feedback
+              id="input-live-feedback"
+              class="credential-field__input-field-name-feedback"
             >
-              {{ field.fieldName }}
-            </label>
+              "{{ fieldName }}" field should not be duplicated
+            </b-form-invalid-feedback>
+          </div>
 
+          <!-- Label Read-->
+          <label
+            v-else
+            class="mr-sm-2 credential-field__field-name-read"
+            :for="`inline-form-input-${index}`"
+          >
+            {{ field.fieldName }}
+          </label>
+
+          <div class="d-flex">
             <!-- Data -->
             <b-input
               :id="`inline-form-input-${index}`"
@@ -54,15 +54,7 @@
                 }
               "
             ></b-input>
-
-            <TypesSelect
-              v-if="edit"
-              :value="field.type"
-              class="credential-field__type-select"
-              @onSelectTypeChange="onSelectTypeChange"
-            />
-
-            <div v-if="!edit" class="credential-field__controls-read">
+            <div v-if="!edit" class="credential-field__controls-read d-flex">
               <!-- Eye button Show/Hide-->
               <b-button
                 v-if="showEye"
@@ -141,34 +133,41 @@
               <span v-if="copied">Copied!</span>
             </div>
           </div>
-        </b-col>
 
-        <b-col v-if="edit" cols="auto">
-          <div class="credential-field__controls-read">
-            <b-button
-              v-if="minusButton"
-              class="credential-field__remove-btn"
-              pill
-              variant="outline-danger"
-              size="sm"
-              @click="onClickRemove"
-            >
-              <font-awesome-icon :icon="['fas', 'minus']" />
-            </b-button>
-            <b-button
-              v-if="plusButton"
-              class="credential-field__add-btn"
-              pill
-              variant="outline-success"
-              size="sm"
-              @click="onClickAdd"
-            >
-              <font-awesome-icon :icon="['fas', 'plus']" />
-            </b-button>
-          </div>
-        </b-col>
-      </b-row>
-    </b-container>
+          <TypesSelect
+            v-if="edit"
+            :value="field.type"
+            class="credential-field__type-select mr-2"
+            @onSelectTypeChange="onSelectTypeChange"
+          />
+        </div>
+      </b-col>
+
+      <b-col v-if="edit" cols="auto">
+        <div class="credential-field__controls-read">
+          <b-button
+            v-if="minusButton"
+            class="credential-field__remove-btn"
+            pill
+            variant="outline-danger"
+            size="sm"
+            @click="onClickRemove"
+          >
+            <font-awesome-icon :icon="['fas', 'minus']" />
+          </b-button>
+          <b-button
+            v-if="plusButton"
+            class="credential-field__add-btn"
+            pill
+            variant="outline-success"
+            size="sm"
+            @click="onClickAdd"
+          >
+            <font-awesome-icon :icon="['fas', 'plus']" />
+          </b-button>
+        </div>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -177,7 +176,6 @@ import Vue from 'vue'
 import {
   BButton,
   BFormInput,
-  BContainer,
   BRow,
   BCol,
   BFormInvalidFeedback
@@ -189,7 +187,6 @@ export default Vue.extend({
     BButton,
     'b-input': BFormInput,
     TypesSelect,
-    BContainer,
     BRow,
     BCol,
     BFormInvalidFeedback
@@ -207,14 +204,17 @@ export default Vue.extend({
       default: false
     },
     plusButton: {
+      type: Boolean,
       required: false,
       default: false
     },
     minusButton: {
+      type: Boolean,
       required: false,
       default: true
     },
     fieldNameValid: {
+      type: Boolean,
       required: false,
       default: true
     }
@@ -294,17 +294,40 @@ export default Vue.extend({
 
 <style lang="scss">
 .credential-field {
+  $p: &;
+  margin-bottom: 1rem;
+
+  &__type-select {
+    width: 110px;
+  }
   &__input-field-name,
   &__input-field-name-feedback {
-    width: 120px;
+    width: 130px;
   }
 
   &__data-field {
     width: 210px;
   }
 
-  &__type-select {
-    width: 120px;
+  @media (max-width: 575.98px) {
+    &:not(&--edit) {
+      margin-bottom: 0.75rem;
+    }
+    &--edit {
+      border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+      padding-bottom: 1rem;
+      #{$p}__input-field-name,
+      #{$p}__input-field-name-feedback,
+      #{$p}__data-field {
+        margin-bottom: 8px;
+      }
+    }
+    &__input-field-name,
+    &__input-field-name-feedback,
+    &__data-field,
+    &__type-select {
+      width: 200px;
+    }
   }
 
   .fa-eye,
@@ -318,7 +341,7 @@ export default Vue.extend({
   }
 
   button {
-    margin-right: 6px;
+    margin-right: 2px;
   }
 
   &__form {

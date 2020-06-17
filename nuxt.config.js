@@ -4,10 +4,13 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Tresor',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1, maximum-scale=1.0'
+      },
       {
         hid: 'description',
         name: 'description',
@@ -19,7 +22,8 @@ export default {
   pwa: {
     manifest: {
       name: 'Tresor App',
-      lang: 'en-US'
+      lang: 'en-US',
+      theme_color: '#222222'
     },
     icon: {
       iconSrc: './static/icon.png'

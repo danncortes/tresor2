@@ -1,5 +1,5 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
+  <b-form class="login-form" @submit.prevent="onSubmit">
     <b-form-group id="input-group-email" label="Email" label-for="input-email">
       <b-form-input
         id="input-email"
@@ -7,7 +7,6 @@
         type="email"
         required
         placeholder="Enter email"
-        :readonly="readonly"
       ></b-form-input>
     </b-form-group>
     <b-form-group id="input-group-pass" label="Password" label-for="input-pass">
@@ -17,7 +16,6 @@
         type="password"
         required
         placeholder="Enter your password"
-        :readonly="readonly"
       ></b-form-input>
     </b-form-group>
     <b-form-group
@@ -32,23 +30,30 @@
         type="password"
         :required="!masterp"
         placeholder="Enter your Master Password"
-        :readonly="readonly"
       ></b-form-input>
     </b-form-group>
-    <b-alert v-model="showAlert" variant="danger" dismissible>
+    <b-alert :show="showAlert" variant="danger" dismissible>
       {{ error }}
     </b-alert>
     <b-button block type="submit" variant="primary" :disabled="loading">
-      <font-awesome-icon v-if="loading" :icon="['fas', 'spinner']" spin />
+      <b-spinner v-if="loading" small label="Spinning"></b-spinner>
       <span v-else>Log In</span>
     </b-button>
-    <b-button block type="reset" variant="default" size="sm">Clear</b-button>
+    <b-button
+      block
+      type="reset"
+      variant="default"
+      size="sm"
+      class="clear-button"
+      >Clear</b-button
+    >
     <b-button
       v-if="masterp"
       block
       type="reset"
       variant="default"
       size="sm"
+      class="reset-button"
       @click="removeMasterP"
     >
       Log In from a new device?
@@ -85,22 +90,13 @@ export default Vue.extend({
         email: '',
         password: '',
         masterp: ''
-      },
-      showAlert: !!this.error,
-      readonly: true
-    }
-  },
-  watch: {
-    error(newValue) {
-      if (newValue) {
-        this.showAlert = true
       }
     }
   },
-  mounted() {
-    setTimeout(() => {
-      this.readonly = false
-    }, 0)
+  computed: {
+    showAlert() {
+      return !!this.error
+    }
   },
   methods: {
     onSubmit() {

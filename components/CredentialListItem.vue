@@ -1,18 +1,20 @@
 <template>
   <div class="credential-list-item">
     <div class="credential-list-item__bar py-3" @click="onClickCredential">
-      <b-container class="bv-example-row" fluid>
-        <b-row>
-          <b-col cols="5">{{ credential.name }}</b-col>
-          <b-col cols="3" class="credential-list-item__updated-at">{{
-            credential.updatedAt
-              | format({ format: 'DD-MM-YYYY HH:mm', dayjs: this.$dayjs })
+      <b-container class="bv-example-row p-0" fluid>
+        <b-row no-gutters>
+          <b-col cols="7" sm="9" class=" pl-2 pr-3">{{
+            credential.name
           }}</b-col>
-          <b-col cols="3" class="credential-list-item__created-at">{{
+          <b-col cols="4" sm="2" class="credential-list-item__updated-at">{{
+            credential.updatedAt
+              | format({ format: 'DD.MM.YY HH:mm', dayjs: this.$dayjs })
+          }}</b-col>
+          <!-- <b-col cols="3" class="credential-list-item__created-at">{{
             credential.createdAt
               | format({ format: 'DD-MM-YYYY HH:mm', dayjs: this.$dayjs })
-          }}</b-col>
-          <b-col cols="1">
+          }}</b-col> -->
+          <b-col cols="1" class="text-center">
             <font-awesome-icon
               v-if="credential.open"
               :icon="['fas', 'angle-down']"
@@ -55,7 +57,7 @@
         </b-form>
         <CredentialDetail
           v-else-if="credential.open"
-          class="credential-list-item__detail px-4 pt-4 pb-2"
+          class="credential-list-item__detail pb-3"
           :open="credential.open"
           :data="credential.data"
         />
@@ -245,8 +247,8 @@ export default Vue.extend({
     onClickCancelDelete() {
       this.confirmDelete = false
     },
-    onClickConfirmDelete() {
-      this.deleteCredential(this.credential._id)
+    async onClickConfirmDelete() {
+      await this.deleteCredential(this.credential._id)
       this.confirmDelete = false
     }
   }
@@ -270,7 +272,7 @@ export default Vue.extend({
   }
   &__updated-at,
   &__created-at {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     //color: #777;
     font-weight: 600;
     line-height: 1.5rem;

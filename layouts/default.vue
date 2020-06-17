@@ -1,21 +1,25 @@
 <template>
-  <b-row class="layout-container" align-v="center" align-h="center" no-gutters>
+  <b-row
+    :class="['layout-container', { 'layout-container--login': inLoginView }]"
+    align-v="center"
+    align-h="center"
+    no-gutters
+  >
     <b-col
       :md="layoutBreakPoints.md"
       :lg="layoutBreakPoints.lg"
       :xl="layoutBreakPoints.xl"
+      :class="[inLoginView ? 'm-4' : 'm-3']"
     >
-      <HeaderComponent />
-      <b-card no-body>
-        <nuxt />
-      </b-card>
+      <HeaderComponent :in-login-view="inLoginView" />
+      <nuxt />
     </b-col>
   </b-row>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { BRow, BCol, BCard } from 'bootstrap-vue'
+import { BRow, BCol } from 'bootstrap-vue'
 import HeaderComponent from '@/components/HeaderComponent.vue'
 
 interface BreakPoint {
@@ -27,7 +31,6 @@ export default Vue.extend({
   components: {
     BRow,
     BCol,
-    BCard,
     HeaderComponent
   },
   data() {
@@ -47,9 +50,12 @@ export default Vue.extend({
   },
   computed: {
     layoutBreakPoints(): BreakPoint {
-      return this.currentRoute === 'login'
+      return this.inLoginView
         ? this.loginLayoutBreakPoints
         : this.defaultLayoutBreakPoints
+    },
+    inLoginView(): boolean {
+      return this.currentRoute === 'login'
     }
   },
   watch: {
@@ -68,20 +74,16 @@ export default Vue.extend({
 })
 </script>
 
-<style>
+<style lang="scss">
 html {
   font-size: 16px;
 }
 
-body {
-  background-color: #333333;
-  height: 100vh;
-}
-
-#app {
-  height: 100vh;
-}
 .layout-container {
-  height: 100vh;
+  min-height: 100vh;
+
+  &--login {
+    background-color: #222222;
+  }
 }
 </style>

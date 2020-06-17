@@ -1,5 +1,5 @@
 <template>
-  <div class="credential-detail">
+  <div class="credential-detail d-flex justify-content-center">
     <div
       v-if="masterpError"
       class="d-flex justify-content-center credential-detail__error"
@@ -8,14 +8,15 @@
         >There was an error decripting this credential</b-alert
       >
     </div>
-    <CredentialField
-      v-for="(field, key) in credentialDetailArray"
-      v-else
-      :key="key"
-      :field="field"
-      :index="key"
-      @onToggleShowPass="onToggleShowPass"
-    />
+    <div else>
+      <CredentialField
+        v-for="(field, key) in credentialDetailArray"
+        :key="key"
+        :field="field"
+        :index="key"
+        @onToggleShowPass="onToggleShowPass"
+      />
+    </div>
   </div>
 </template>
 

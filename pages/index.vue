@@ -1,30 +1,19 @@
 <template>
-  <div class="layout-in dashboard px-3 py-3">
-    <b-container class="title-area mb-3">
-      <b-row align-h="between" align-v="center" no-gutters>
-        <b-col cols="auto">
-          <h4 v-if="openNewCredential" class="title mb-0">New Credential</h4>
-          <h4 v-else class="title">Credentials</h4>
-        </b-col>
-        <b-col cols="auto">
-          <b-button
-            v-if="openNewCredential"
-            v-b-toggle.new-credential
-            size="sm"
-          >
-            <font-awesome-icon :icon="['fas', 'times']" /> Cancel
-          </b-button>
-          <b-button
-            v-else
-            v-b-toggle.new-credential
-            variant="primary"
-            size="sm"
-          >
-            <font-awesome-icon :icon="['fas', 'plus']" /> New
-          </b-button>
-        </b-col>
-      </b-row>
-    </b-container>
+  <div class="layout-in dashboard">
+    <div class="title-area mb-3 d-flex justify-content-between">
+      <div cols="auto">
+        <h4 v-if="openNewCredential" class="title mb-0">New Credential</h4>
+        <h4 v-else class="title">Credentials</h4>
+      </div>
+      <div cols="auto">
+        <b-button v-if="openNewCredential" v-b-toggle.new-credential size="sm">
+          <font-awesome-icon :icon="['fas', 'times']" /> Cancel
+        </b-button>
+        <b-button v-else v-b-toggle.new-credential variant="primary" size="sm">
+          <font-awesome-icon :icon="['fas', 'plus']" /> New
+        </b-button>
+      </div>
+    </div>
 
     <!-- New Credential -->
     <b-collapse id="new-credential" v-model="openNewCredential">
@@ -46,29 +35,25 @@
         </transition>
       </div>
     </b-collapse>
-    <div v-if="credentials.status.loading">
-      Loading...
+    <div v-if="credentials.loading" class="d-flex justify-content-center pt-3">
+      <b-spinner medium label="Spinning" variant="primary"></b-spinner>
     </div>
-    <div v-else-if="credentials.status.error">
-      {{ credentials.status }}
+    <div v-else-if="credentials.error">
+      <p class="text-center">{{ credentials.error }}</p>
+      <div class="d-flex justify-content-center">
+        <b-button variant="primary" size="sm" @click="reloadView">
+          <font-awesome-icon :icon="['fas', 'sync']" /> Reload
+        </b-button>
+      </div>
     </div>
-    <div v-else>
-      <CredentialsList :credentials="credentials.list" />
-    </div>
+    <CredentialsList v-else :credentials="credentials.list" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
-import {
-  BCollapse,
-  VBToggle,
-  BContainer,
-  BRow,
-  BCol,
-  BButton
-} from 'bootstrap-vue'
+import { BCollapse, VBToggle, BButton, BSpinner } from 'bootstrap-vue'
 import CredentialsList from '@/components/CredentialsList.vue'
 import CreateCredential from '@/components/CreateCredential.vue'
 
@@ -76,29 +61,30 @@ export default Vue.extend({
   components: {
     CredentialsList,
     CreateCredential,
-    BContainer,
-    BRow,
-    BCol,
     BButton,
-    BCollapse
+    BCollapse,
+    BSpinner
   },
   directives: {
     'b-toggle': VBToggle
   },
   middleware: ['masterp', 'isVerified'],
-  computed: {
-    ...mapGetters('credentials', ['credentials'])
-  },
   data() {
     return {
       openNewCredential: false
     }
   },
+  computed: {
+    ...mapGetters('credentials', ['credentials'])
+  },
   created() {
     this.getCredentials()
   },
   methods: {
-    ...mapActions('credentials', ['getCredentials'])
+    ...mapActions('credentials', ['getCredentials']),
+    reloadView() {
+      window.location.reload()
+    }
   }
 })
 </script>

@@ -1,6 +1,19 @@
 <template>
-  <div class="tresor-header d-flex mb-2 justify-content-between">
-    <div class="tresor-header__logo d-flex">
+  <div
+    :class="[
+      'tresor-header',
+      'd-flex',
+      'mb-3',
+      inLoginView ? 'justify-content-center' : 'justify-content-between'
+    ]"
+  >
+    <div
+      :class="[
+        'tresor-header__logo',
+        { 'tresor-header__logo--login': inLoginView },
+        'd-flex'
+      ]"
+    >
       <img
         class="tresor-icon mr-1"
         alt="Tresor Logo"
@@ -13,10 +26,9 @@
       </h4>
     </div>
     <b-button
-      v-if="this.$auth.loggedIn"
+      v-if="isLoggedIn"
       size="sm"
       variant="default"
-      class="text-white"
       @click="onClickLogout"
     >
       <span class="mr-2">Log Out</span>
@@ -31,6 +43,18 @@ import { BButton } from 'bootstrap-vue'
 export default Vue.extend({
   components: {
     BButton
+  },
+  props: {
+    inLoginView: {
+      required: true,
+      type: Boolean
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      // @ts-ignore
+      return this.$auth.loggedIn
+    }
   },
   methods: {
     async onClickLogout() {
@@ -48,9 +72,19 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .tresor-header {
   &__logo {
+    $p: &;
     & .tresor-icon {
       width: 30px;
       height: 30px;
+    }
+    &--login {
+      .tresor-icon {
+        width: 40px;
+        height: 40px;
+      }
+      #{$p}--text {
+        font-size: 26px;
+      }
     }
     &--text {
       font-size: 20px;

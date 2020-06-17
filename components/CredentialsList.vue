@@ -1,11 +1,10 @@
 <template>
   <div class="credential-list">
-    <b-container class="credential-list__header mb-2" fluid>
-      <b-row>
-        <b-col cols="5">Name</b-col>
-        <b-col cols="3">Updated At</b-col>
-        <b-col cols="3">Created At</b-col>
-        <b-col cols="1">
+    <b-container class="credential-list__header mb-2 p-0" fluid>
+      <b-row no-gutters>
+        <b-col cols="7" sm="9" class=" pl-2 pr-3">Name</b-col>
+        <b-col cols="4" sm="2">Updated</b-col>
+        <b-col cols="1" class="text-center">
           <font-awesome-icon :icon="['fas', 'angle-left']" />
         </b-col>
       </b-row>
