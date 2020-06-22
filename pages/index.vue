@@ -46,6 +46,11 @@
         </b-button>
       </div>
     </div>
+    <div v-else-if="credentials.list.length === 0" class="text-center">
+      <b-alert v-b-toggle.new-credential show
+        >You don't have credentials, create one!</b-alert
+      >
+    </div>
     <CredentialsList v-else :credentials="credentials.list" />
   </div>
 </template>

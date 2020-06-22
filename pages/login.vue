@@ -10,11 +10,11 @@
     </div>
     <div v-else>
       <h3 class="form-title text-white mb-3">Create Account</h3>
-      <!-- <SignUpForm
-        :error="userState.signUp.error"
-        :loading="userState.signUp.loading"
+      <SignUpForm
+        :error="signupError"
+        :loading="signupLoading"
         @onSubmitSignUp="onSubmitSignUp"
-      ></SignUpForm> -->
+      ></SignUpForm>
     </div>
     <b-button
       block
@@ -30,13 +30,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import { BButton } from 'bootstrap-vue'
+import { v4 as uuidv4 } from 'uuid'
 import LoginForm from '@/components/LoginForm.vue'
+import SignUpForm from '@/components/SignUpForm.vue'
 
 export default Vue.extend({
   components: {
     LoginForm,
-    BButton
-    // SignUpForm
+    BButton,
+    SignUpForm
   },
   data() {
     return {
@@ -80,13 +82,35 @@ export default Vue.extend({
       } finally {
         this.loginLoading = false
       }
+    },
+    async onSubmitSignUp(form: object) {
+      try {
+        this.signupError = null
+        this.signupLoading = true
+        const masterp: string = uuidv4()
+        const newUserData = {
+          ...form,
+          masterp
+        }
+        await this.$axios.$post('users', newUserData)
+        // @ts-ignore
+        await this.$auth.loginWith('local', { data: { ...newUserData } })
+        // @ts-ignore
+        await this.$cookies.set('masterp', masterp)
+        this.$router.push({ name: 'welcome', params: { masterp } })
+      } catch (err) {
+        this.signupError = 'There was an error Signing In'
+      } finally {
+        this.signupLoading = false
+      }
     }
   }
 })
 </script>
 
 <style lang="scss">
-.login-form {
+.login-form,
+.signup-form {
   label,
   .reset-button,
   .clear-button {

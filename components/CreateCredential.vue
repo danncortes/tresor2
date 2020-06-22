@@ -38,7 +38,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { BForm } from 'bootstrap-vue'
 import { cryptDataObj } from '@/utils/cryptDecrypt'
 import { userName, password } from '@/constants/fieldsTemplate'
-import CredentialForm from '@/components/CredentialForm'
+import CredentialForm from '@/components/CredentialForm.vue'
 import CredentialFormMixin from '@/mixins/CredentialFormMixin'
 import MasterP from '@/mixins/MasterP'
 
@@ -73,7 +73,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('credentials', ['credentials']),
     processing() {
-      return this.credentials.status.loading
+      return this.credentials.loading
     }
   },
   methods: {

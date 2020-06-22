@@ -3,8 +3,9 @@
     :class="[
       'tresor-header',
       'd-flex',
-      'mb-3',
-      inLoginView ? 'justify-content-center' : 'justify-content-between'
+      inLoginView
+        ? 'justify-content-center mb-4'
+        : 'justify-content-between mb-3'
     ]"
   >
     <div
@@ -32,12 +33,13 @@
       @click="onClickLogout"
     >
       <span class="mr-2">Log Out</span>
-      <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+      <b-spinner v-if="loadingLogOut" small label="Spinning"></b-spinner>
+      <font-awesome-icon v-else :icon="['fas', 'sign-out-alt']" />
     </b-button>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import { BButton } from 'bootstrap-vue'
 export default Vue.extend({
@@ -50,6 +52,11 @@ export default Vue.extend({
       type: Boolean
     }
   },
+  data() {
+    return {
+      loadingLogOut: false
+    }
+  },
   computed: {
     isLoggedIn() {
       // @ts-ignore
@@ -58,11 +65,13 @@ export default Vue.extend({
   },
   methods: {
     async onClickLogout() {
+      this.loadingLogOut = true
       try {
         // @ts-ignore
         await this.$auth.logout('local')
         this.$router.push('/login')
       } finally {
+        this.loadingLogOut = false
       }
     }
   }
