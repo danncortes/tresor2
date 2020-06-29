@@ -73,7 +73,7 @@ export default Vue.extend({
   directives: {
     'b-toggle': VBToggle
   },
-  middleware: ['masterp', 'isVerified'],
+  middleware: ['auth', 'masterp', 'isVerified'],
   data() {
     return {
       openNewCredential: false
@@ -82,7 +82,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('credentials', ['credentials'])
   },
-  created() {
+  mounted() {
     this.getCredentials()
   },
   methods: {

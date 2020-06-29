@@ -39,6 +39,7 @@
 import Vue from 'vue'
 import { BButton } from 'bootstrap-vue'
 export default Vue.extend({
+  middleware: ['auth', 'masterp'],
   components: {
     BButton
   },
@@ -47,7 +48,7 @@ export default Vue.extend({
       masterp: this.$route.params.masterp
     }
   },
-  created() {
+  mounted() {
     if (!this.masterp) {
       this.goToDashboard()
     }

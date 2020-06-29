@@ -35,6 +35,12 @@ import LoginForm from '@/components/LoginForm.vue'
 import SignUpForm from '@/components/SignUpForm.vue'
 
 export default Vue.extend({
+  // @ts-ignore
+  middleware({ $auth, redirect }) {
+    if ($auth.$state.loggedIn) {
+      return redirect('/')
+    }
+  },
   components: {
     LoginForm,
     BButton,
