@@ -119,7 +119,8 @@ export default Vue.extend({
 .signup-form {
   label,
   .reset-button,
-  .clear-button {
+  .clear-button,
+  .forgot-button {
     color: #ccc;
   }
 }

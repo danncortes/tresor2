@@ -45,8 +45,16 @@
       variant="default"
       size="sm"
       class="clear-button"
-      >Clear</b-button
-    >
+      >Clear
+    </b-button>
+    <b-button
+      block
+      variant="default"
+      size="sm"
+      class="forgot-button"
+      href="/forgot-password"
+      >Forgot my password
+    </b-button>
     <b-button
       v-if="masterp"
       block
