@@ -24,6 +24,10 @@
           <span v-else>Send</span>
         </b-button>
       </b-form>
+
+      <b-button block variant="default" href="/login">
+        Back to Login
+      </b-button>
     </div>
   </div>
 </template>

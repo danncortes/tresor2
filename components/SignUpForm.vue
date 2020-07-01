@@ -41,7 +41,7 @@
         :state="validPass"
       ></b-form-input>
     </b-form-group>
-    <b-alert v-model="showAlert" variant="danger" dismissible>
+    <b-alert :show="showAlert" variant="danger" dismissible>
       {{ error }}
     </b-alert>
     <b-button
@@ -100,13 +100,6 @@ export default Vue.extend({
     },
     showAlert() {
       return !!this.error
-    }
-  },
-  watch: {
-    error(newValue) {
-      if (newValue) {
-        this.showAlert = true
-      }
     }
   },
   methods: {
