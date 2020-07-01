@@ -1,10 +1,20 @@
 <template>
   <div class="d-flex justify-content-center">
     <b-spinner v-if="isProcessing" medium label="Spinning"></b-spinner>
-    <b-alert v-else-if="!token || isBadToken" :show="true" variant="danger">
-      It looks like the verification token is not valid. <br />
-      Login to your account to resend the verification token
-    </b-alert>
+    <div
+      v-else-if="!token || isBadToken"
+      class="d-flex flex-column justify-content-center"
+    >
+      <b-alert :show="true" variant="danger">
+        It looks like the verification token is not valid. <br />
+        Go to forgot password to re-send the verification token
+      </b-alert>
+      <div class="d-flex justify-content-center">
+        <b-button variant="primary" href="/forgot-password" size="sm">
+          Forgot Password
+        </b-button>
+      </div>
+    </div>
     <ResetPasswordForm
       v-else-if="isVerified && !isResetSuccess"
       class="w-100"

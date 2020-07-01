@@ -23,13 +23,18 @@ export default {
     manifest: {
       name: 'Tresor App',
       lang: 'en-US',
+      start_url: '/login',
       theme_color: '#222222'
     },
     icon: {
       iconSrc: './static/icon.png'
     },
     meta: {
+      viewport: 'width=device-width, initial-scale=1, maximum-scale=1.0'
       /* meta options */
+    },
+    workbox: {
+      /* workbox options */
     }
   },
   /*
