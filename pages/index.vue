@@ -51,16 +51,32 @@
         >You don't have credentials, create one!</b-alert
       >
     </div>
-    <CredentialsList v-else :credentials="credentials.list" />
+    <div v-else>
+      <SeachFilter
+        v-if="credentials.list.length > 5"
+        class="mb-4"
+        @onSearchFilterChange="onSearchFilterChange"
+      />
+      <CredentialsList :credentials="credentialList" />
+      <b-alert
+        v-if="credentialsFilteredFor.length > 2 && credentialList.length === 0"
+        v-b-toggle.new-credential
+        variant="warning"
+        show
+      >
+        There are no credentials that match with the search
+      </b-alert>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 import { BCollapse, VBToggle, BButton, BSpinner } from 'bootstrap-vue'
 import CredentialsList from '@/components/CredentialsList.vue'
 import CreateCredential from '@/components/CreateCredential.vue'
+import SeachFilter from '@/components/SearchFilter.vue'
 
 export default Vue.extend({
   components: {
@@ -68,7 +84,8 @@ export default Vue.extend({
     CreateCredential,
     BButton,
     BCollapse,
-    BSpinner
+    BSpinner,
+    SeachFilter
   },
   directives: {
     'b-toggle': VBToggle
@@ -76,11 +93,22 @@ export default Vue.extend({
   middleware: ['auth', 'masterp', 'isVerified'],
   data() {
     return {
-      openNewCredential: false
+      openNewCredential: false,
+      credentialsFilteredFor: ''
     }
   },
   computed: {
-    ...mapGetters('credentials', ['credentials'])
+    ...mapGetters('credentials', ['credentials']),
+    credentialList() {
+      if (this.credentialsFilteredFor.length > 2) {
+        return this.credentials.list.filter((cred) => {
+          const name = cred.name.toLowerCase()
+          return name.includes(this.credentialsFilteredFor.toLowerCase())
+        })
+      } else {
+        return this.credentials.list
+      }
+    }
   },
   mounted() {
     this.getCredentials()
@@ -89,6 +117,9 @@ export default Vue.extend({
     ...mapActions('credentials', ['getCredentials']),
     reloadView() {
       window.location.reload()
+    },
+    onSearchFilterChange(value) {
+      this.credentialsFilteredFor = value
     }
   }
 })

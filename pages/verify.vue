@@ -11,7 +11,6 @@
             My account is already verified
           </b-button>
         </div>
-        <p v-if="isError">There was an error sending the verification token</p>
       </div>
     </div>
     <br />
@@ -48,19 +47,36 @@ export default Vue.extend({
   },
   data() {
     return {
-      isProcessing: false,
-      isError: false
+      isProcessing: false
     }
   },
   mounted() {},
   methods: {
     async resendVerificationToken() {
       this.isProcessing = true
-      this.isError = false
       try {
         await this.$axios.$post('verify/new')
+        this.$bvToast.toast(
+          'The verification token has been sent succesfully',
+          {
+            title: 'Done!',
+            variant: 'success',
+            solid: false,
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-bottom-center'
+          }
+        )
       } catch (err) {
-        this.isError = true
+        this.$bvToast.toast(
+          'There was an error sending the verification token',
+          {
+            title: 'Error',
+            variant: 'danger',
+            solid: false,
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-bottom-center'
+          }
+        )
       } finally {
         this.isProcessing = false
       }

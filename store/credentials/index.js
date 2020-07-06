@@ -4,7 +4,7 @@ import getters from './getters'
 
 export const state = () => ({
   list: [],
-  loading: false,
+  loading: true,
   error: false,
   status: {}
 })
