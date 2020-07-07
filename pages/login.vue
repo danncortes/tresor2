@@ -100,6 +100,8 @@ export default Vue.extend({
         }
         await this.$axios.$post('users', newUserData)
         // @ts-ignore
+        this.$cookies.remove('masterp')
+        // @ts-ignore
         await this.$auth.loginWith('local', { data: { ...newUserData } })
         // @ts-ignore
         await this.$cookies.set('masterp', masterp)

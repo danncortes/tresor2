@@ -26,16 +26,18 @@
         TRESOR
       </h4>
     </div>
-    <b-button
-      v-if="isLoggedIn"
-      size="sm"
-      variant="default"
-      @click="onClickLogout"
-    >
-      <span class="mr-2">Log Out</span>
-      <b-spinner v-if="loadingLogOut" small label="Spinning"></b-spinner>
-      <font-awesome-icon v-else :icon="['fas', 'sign-out-alt']" />
-    </b-button>
+    <div v-if="isLoggedIn">
+      <b-button size="sm" variant="default" href="/">
+        <font-awesome-icon size="lg" :icon="['fas', 'list']" />
+      </b-button>
+      <b-button size="sm" variant="default" href="/profile">
+        <font-awesome-icon size="lg" :icon="['fas', 'user']" />
+      </b-button>
+      <b-button size="sm" variant="default" @click="onClickLogout">
+        <b-spinner v-if="loadingLogOut" small label="Spinning"></b-spinner>
+        <font-awesome-icon v-else size="lg" :icon="['fas', 'power-off']" />
+      </b-button>
+    </div>
   </div>
 </template>
 

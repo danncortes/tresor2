@@ -3,7 +3,7 @@
     <div v-if="isProcessing" class="d-flex justify-content-center">
       <b-spinner medium label="Spinning"></b-spinner>
     </div>
-    <div v-else-if="masterp">
+    <div v-else-if="masterpFromParam">
       <h3>Welcome to Tresor</h3>
       <p>
         This is your Master Password and here there are some important details
@@ -26,7 +26,7 @@
               ref="masterp"
               class="border rounded p-2 text-info text-center cursor-pointer font-weight-bold w-100"
               type="text"
-              :value="masterp"
+              :value="masterpFromParam"
             />
           </div>
           <b-alert
@@ -59,20 +59,21 @@
 <script lang="ts">
 import Vue from 'vue'
 import { BButton } from 'bootstrap-vue'
+import MasterP from '@/mixins/MasterP'
 export default Vue.extend({
-  middleware: ['auth', 'masterp'],
   components: {
     BButton
   },
+  mixins: [MasterP],
+  middleware: ['auth', 'masterp'],
   data() {
     return {
       isProcessing: true,
-      masterp: this.$route.params.masterp,
-      isMasterpCopied: false
+      masterpFromParam: this.$route.params.masterp
     }
   },
   mounted() {
-    if (!this.masterp) {
+    if (!this.masterpFromParam) {
       this.goToDashboard()
     } else {
       this.isProcessing = false
@@ -81,15 +82,6 @@ export default Vue.extend({
   methods: {
     goToDashboard() {
       this.$router.push('/')
-    },
-    onCopyMasterp() {
-      // @ts-ignore
-      this.$refs.masterp.select()
-      document.execCommand('copy')
-      this.isMasterpCopied = true
-      setTimeout(() => {
-        this.isMasterpCopied = false
-      }, 3000)
     }
   }
 })
