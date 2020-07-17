@@ -25,13 +25,7 @@
         Copied!
       </b-alert>
     </div>
-    <b-button
-      v-else
-      block
-      variant="primary"
-      class="mb-2"
-      @click="toggleMasterP"
-    >
+    <b-button v-else block class="mb-2" @click="toggleMasterP">
       Reveal Master Key
     </b-button>
     <p>
@@ -40,7 +34,7 @@
       Save it in a secure place.
     </p>
     <hr />
-    <h5 class="mb-3">Change my Password</h5>
+    <h5 class="mb-3">Change Password</h5>
     <div v-if="iWantToChangeMyPass">
       <ChangePasswordForm
         :is-loading="isChangePassInProgress"
@@ -55,15 +49,25 @@
         Cancel
       </b-button>
     </div>
-    <b-button
-      v-else
-      block
-      variant="primary"
-      class="mb-2"
-      @click="toggleChangeMyPass"
-    >
-      I want to change my password
+    <b-button v-else block class="mb-2" @click="toggleChangeMyPass">
+      Change my password
     </b-button>
+    <hr />
+    <h5 class="mb-3">Download my credentials</h5>
+    <div v-if="isDownloadCredActive">
+      <DownloadCreds class="mb-2" />
+      <b-button variant="default" block class="mb-2" @click="() => { isDownloadCredActive = false }">
+        Cancel
+      </b-button>
+    </div>
+    <div v-else>
+      <p>Get all your credentials in a .csv file</p>
+      <div class="d-flex">
+        <b-button block class="mb-2" @click="() => { isDownloadCredActive = true }">
+          Download
+        </b-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -71,9 +75,11 @@
 import Vue from 'vue'
 import MasterP from '@/mixins/MasterP'
 import ChangePasswordForm from '@/components/ChangePasswordForm.vue'
+import DownloadCreds from '@/components/DownloadCreds.vue'
 export default Vue.extend({
   components: {
-    ChangePasswordForm
+    ChangePasswordForm,
+    DownloadCreds
   },
   middleware: ['auth', 'masterp', 'isVerified'],
   mixins: [MasterP],
@@ -81,7 +87,8 @@ export default Vue.extend({
     return {
       showMasterP: false,
       isChangePassInProgress: false,
-      iWantToChangeMyPass: false
+      iWantToChangeMyPass: false,
+      isDownloadCredActive: false
     }
   },
   methods: {

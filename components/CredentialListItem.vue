@@ -10,10 +10,6 @@
             credential.updatedAt
               | format({ format: 'DD.MM.YY HH:mm', dayjs: this.$dayjs })
           }}</b-col>
-          <!-- <b-col cols="3" class="credential-list-item__created-at">{{
-            credential.createdAt
-              | format({ format: 'DD-MM-YYYY HH:mm', dayjs: this.$dayjs })
-          }}</b-col> -->
           <b-col cols="1" class="text-center">
             <font-awesome-icon
               v-if="credential.open"
