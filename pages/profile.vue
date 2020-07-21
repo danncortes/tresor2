@@ -53,6 +53,7 @@
       Change my password
     </b-button>
     <hr />
+    <!-- Download Credentials -->
     <h5 class="mb-3">Download my credentials</h5>
     <div v-if="isDownloadCredActive">
       <DownloadCreds class="mb-2" />
@@ -67,6 +68,25 @@
           Download
         </b-button>
       </div>
+    </div>
+    <hr />
+    <!-- Delete account -->
+    <h5 class="mb-3">Delete account</h5>
+    <div v-if="isDeleteAccountActive">
+      <p>This action will delete all your data and credentials, we suggest downloading all your credentials first</p>
+      <b-button variant="danger" block class="mb-2" @click="onDeleteAccount">
+        <b-spinner v-if="deleteAccountInProgress" small label="Spinning"></b-spinner>
+        <span v-else>Comfirm delete my account</span>
+      </b-button>
+      <b-button variant="default" block class="mb-2" @click="() => { isDeleteAccountActive = false }">
+        Cancel
+      </b-button>
+    </div>
+    <div v-else>
+      <p>Delete all your credentials and session data from this site</p>
+      <b-button variant="danger" block class="mb-2" @click="() => { isDeleteAccountActive = true }">
+        Delete my Account
+      </b-button>
     </div>
   </div>
 </template>
@@ -88,7 +108,9 @@ export default Vue.extend({
       showMasterP: false,
       isChangePassInProgress: false,
       iWantToChangeMyPass: false,
-      isDownloadCredActive: false
+      isDownloadCredActive: false,
+      isDeleteAccountActive: false,
+      deleteAccountInProgress: false
     }
   },
   methods: {
@@ -124,6 +146,34 @@ export default Vue.extend({
         })
       } finally {
         this.isChangePassInProgress = false
+      }
+    },
+    async onDeleteAccount() {
+      this.deleteAccountInProgress = true
+      try {
+        await this.$axios.$delete('users/me')
+        this.$bvToast.toast('Your account has been deleted successfully!', {
+          title: 'Done!',
+          variant: 'success',
+          solid: true,
+          autoHideDelay: 2000,
+          toaster: 'b-toaster-bottom-center'
+        })
+        setTimeout(() => {
+          this.$auth.logout('local')
+          this.$cookies.removeAll()
+          location.reload();
+        }, 2000)
+      } catch(err) {
+        this.$bvToast.toast('There was an error deleting your account', {
+          title: 'Error',
+          variant: 'danger',
+          solid: true,
+          autoHideDelay: 3000,
+          toaster: 'b-toaster-bottom-center'
+        })
+      } finally {
+        this.deleteAccountInProgress = false
       }
     }
   }
