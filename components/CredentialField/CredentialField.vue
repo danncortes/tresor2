@@ -180,7 +180,7 @@ import {
   BCol,
   BFormInvalidFeedback
 } from 'bootstrap-vue'
-import TypesSelect from '@/components/TypesSelect'
+import TypesSelect from '@/components/TypesSelect.vue'
 
 export default Vue.extend({
   components: {

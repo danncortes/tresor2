@@ -24,7 +24,6 @@
         type="password"
         required
         placeholder="Enter your password"
-        :state="validPass"
       ></b-form-input>
     </b-form-group>
     <b-form-group
@@ -38,7 +37,6 @@
         type="password"
         required
         placeholder="Confirm your password"
-        :state="validPass"
       ></b-form-input>
     </b-form-group>
     <b-alert :show="showAlert" variant="danger" dismissible>
@@ -90,8 +88,7 @@ export default Vue.extend({
         email: '',
         password: ''
       },
-      readonly: true,
-      validPass: null
+      readonly: true
     }
   },
   computed: {

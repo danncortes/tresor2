@@ -30,7 +30,7 @@
       <b-button size="sm" variant="default" href="/">
         <font-awesome-icon size="lg" :icon="['fas', 'list']" />
       </b-button>
-      <b-button size="sm" variant="default" href="/profile">
+      <b-button size="sm" variant="default" @click="$router.push('/profile')">
         <font-awesome-icon size="lg" :icon="['fas', 'user']" />
       </b-button>
       <b-button size="sm" variant="default" @click="onClickLogout">

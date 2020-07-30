@@ -4,7 +4,34 @@
     <h5>Email Account</h5>
     <p>{{ $auth.user.email }}</p>
     <hr />
+
+    <!-- Change password -->
+    <h5 class="mb-3">Change Password</h5>
+    <div v-if="iWantToChangeMyPass">
+      <ChangePasswordForm
+        :is-loading="isChangePassInProgress"
+        @onSubmitChangePass="onSubmitChangePass"
+      />
+      <b-button
+        block
+        variant="default"
+        class="mb-2"
+        @click="toggleChangeMyPass"
+      >
+        Cancel
+      </b-button>
+    </div>
+    <b-button v-else block class="mb-2" @click="toggleChangeMyPass">
+      Change my password
+    </b-button>
+
+    <!-- Show Master Key -->
+    <hr />
     <h5 class="mb-3">Master Key</h5>
+    <p>
+      The Master Key is used to encrypt all your credentials, and it is not recoverable in case of lost.<br />
+      Save it in a secure place.
+    </p>
     <div v-if="showMasterP">
       <input
         ref="masterp"
@@ -28,48 +55,34 @@
     <b-button v-else block class="mb-2" @click="toggleMasterP">
       Reveal Master Key
     </b-button>
-    <p>
-      Remember, the Master Key is used to encrypt all your credentials, and it
-      can not be reset or changed. <br />
-      Save it in a secure place.
-    </p>
     <hr />
-    <h5 class="mb-3">Change Password</h5>
-    <div v-if="iWantToChangeMyPass">
-      <ChangePasswordForm
-        :is-loading="isChangePassInProgress"
-        @onSubmitChangePass="onSubmitChangePass"
-      />
-      <b-button
-        block
-        variant="default"
-        class="mb-2"
-        @click="toggleChangeMyPass"
-      >
-        Cancel
-      </b-button>
-    </div>
-    <b-button v-else block class="mb-2" @click="toggleChangeMyPass">
-      Change my password
-    </b-button>
+
+    <!-- Change Master Key -->
+    <ChangeMasterKey />
     <hr />
+
     <!-- Download Credentials -->
-    <h5 class="mb-3">Download my credentials</h5>
-    <div v-if="isDownloadCredActive">
-      <DownloadCreds class="mb-2" />
-      <b-button variant="default" block class="mb-2" @click="() => { isDownloadCredActive = false }">
-        Cancel
-      </b-button>
-    </div>
-    <div v-else>
-      <p>Get all your credentials in a .csv file</p>
-      <div class="d-flex">
-        <b-button block class="mb-2" @click="() => { isDownloadCredActive = true }">
-          Download
+    <div v-if="credentials.list.length > 0">
+      <h5 class="mb-3">Download my credentials</h5>
+      <div v-if="isDownloadCredActive">
+        <DownloadCreds
+          class="mb-2"
+          :credentials="credentials.list"
+        />
+        <b-button variant="default" block class="mb-2" @click="() => { isDownloadCredActive = false }">
+          Cancel
         </b-button>
       </div>
+      <div v-else>
+        <p>Get all your credentials in a .csv file</p>
+        <div class="d-flex">
+          <b-button block class="mb-2" @click="() => { isDownloadCredActive = true }">
+            Download
+          </b-button>
+        </div>
+      </div>
+      <hr />
     </div>
-    <hr />
     <!-- Delete account -->
     <h5 class="mb-3">Delete account</h5>
     <div v-if="isDeleteAccountActive">
@@ -96,13 +109,25 @@ import Vue from 'vue'
 import MasterP from '@/mixins/MasterP'
 import ChangePasswordForm from '@/components/ChangePasswordForm.vue'
 import DownloadCreds from '@/components/DownloadCreds.vue'
+import ChangeMasterKey from '@/components/ChangeMasterKey/ChangeMasterKey.vue'
+import { mapGetters, mapActions } from 'vuex'
+
 export default Vue.extend({
   components: {
     ChangePasswordForm,
-    DownloadCreds
+    DownloadCreds,
+    ChangeMasterKey
   },
   middleware: ['auth', 'masterp', 'isVerified'],
   mixins: [MasterP],
+  computed: {
+    ...mapGetters('credentials', ['credentials']),
+  },
+  mounted() {
+    if(this.credentials.list.length === 0) {
+      this.getCredentials()
+    }
+  },
   data() {
     return {
       showMasterP: false,
@@ -114,6 +139,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions('credentials', ['getCredentials']),
     toggleMasterP() {
       this.showMasterP = !this.showMasterP
     },

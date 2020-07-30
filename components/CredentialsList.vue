@@ -22,7 +22,7 @@
 import Vue from 'vue'
 import { cloneDeep } from 'lodash'
 import { BContainer, BRow, BCol } from 'bootstrap-vue'
-import CredentialListItem from '@/components/CredentialListItem'
+import CredentialListItem from '@/components/CredentialListItem.vue'
 
 export default Vue.extend({
   components: {

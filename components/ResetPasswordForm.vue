@@ -11,7 +11,6 @@
         type="password"
         required
         placeholder="Enter your new password"
-        :state="validPass"
       ></b-form-input>
     </b-form-group>
     <b-form-group
@@ -25,7 +24,6 @@
         type="password"
         required
         placeholder="Confirm your new password"
-        :state="validPass"
       ></b-form-input>
     </b-form-group>
     <b-button
@@ -59,8 +57,7 @@ export default Vue.extend({
     return {
       form: {
         password: ''
-      },
-      validPass: null
+      }
     }
   },
   computed: {

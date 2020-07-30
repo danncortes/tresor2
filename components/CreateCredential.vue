@@ -82,6 +82,7 @@ export default Vue.extend({
       this.$emit('cancelCreate')
     },
     async saveCredential() {
+      console.log('saveCredential -> this.masterp', this.masterp)
       const credential = {
         name: this.newCredential.name,
         data: cryptDataObj(this.cleanFields(), this.masterp)
